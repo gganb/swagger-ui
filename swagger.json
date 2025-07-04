@@ -1,0 +1,6055 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Consultation",
+      "description": "상담 시간 관리 API"
+    },
+    {
+      "name": "Payment",
+      "description": "결제 관리 API"
+    },
+    {
+      "name": "Career",
+      "description": "경력 관리 API"
+    },
+    {
+      "name": "OAuth2",
+      "description": "소셜 로그인 API"
+    },
+    {
+      "name": "Admin Review",
+      "description": "관리자 리뷰 관리 API"
+    },
+    {
+      "name": "Admin Coupon",
+      "description": "관리자 쿠폰 관리 API"
+    },
+    {
+      "name": "Keyword",
+      "description": "키워드 관리 API"
+    },
+    {
+      "name": "Review",
+      "description": "리뷰 관리 API"
+    },
+    {
+      "name": "Admin",
+      "description": "관리자 API - 멘토 경력 관리"
+    },
+    {
+      "name": "Notification",
+      "description": "실시간 알림 API"
+    },
+    {
+      "name": "Socket Token",
+      "description": "WebSocket 토큰 관리 API"
+    },
+    {
+      "name": "Admin Complaint",
+      "description": "관리자 문의/민원 관리 API"
+    },
+    {
+      "name": "ChatRoom",
+      "description": "채팅방 관리 API"
+    },
+    {
+      "name": "Auth",
+      "description": "인증 관련 API"
+    },
+    {
+      "name": "Complaint",
+      "description": "문의/민원 관리 API"
+    },
+    {
+      "name": "User Coupon",
+      "description": "사용자 쿠폰 관리 API"
+    },
+    {
+      "name": "Profile",
+      "description": "프로필 관리 API"
+    },
+    {
+      "name": "Ticket",
+      "description": "티켓 관리 API"
+    },
+    {
+      "name": "Category",
+      "description": "카테고리 관리 API"
+    },
+    {
+      "name": "User",
+      "description": "사용자 관리 API"
+    },
+    {
+      "name": "Reservation",
+      "description": "예약 관리 API"
+    },
+    {
+      "name": "Certificate",
+      "description": "경력증명서 관리 API"
+    }
+  ],
+  "paths": {
+    "/socket/token": {
+      "post": {
+        "tags": [
+          "Socket Token"
+        ],
+        "summary": "WebSocket 토큰 발급",
+        "description": "WebSocket 연결을 위한 토큰을 발급합니다",
+        "operationId": "createSocketToken",
+        "responses": {
+          "201": {
+            "description": "WebSocket 토큰 발급 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseSocketTokenResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{paymentId}/cancel": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "결제 취소",
+        "description": "결제를 취소합니다",
+        "operationId": "cancelPayment",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "취소할 결제 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentCancelRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "결제 취소 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/prepare": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "결제 준비",
+        "description": "결제를 준비하고 결제 정보를 생성합니다",
+        "operationId": "prepare",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentPrepareRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "결제 준비 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePaymentPrepareResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/confirm": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "결제 승인",
+        "description": "결제를 최종 승인 처리합니다",
+        "operationId": "confirmPayment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentConfirmRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "결제 승인 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePaymentConfirmResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/profile-image": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "프로필 이미지 업로드",
+        "description": "사용자의 프로필 이미지를 업로드합니다",
+        "operationId": "saveImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "업로드할 이미지 파일"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "프로필 이미지 업로드 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseProfileImageUploadResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "프로필 이미지 삭제",
+        "description": "사용자의 프로필 이미지를 삭제합니다",
+        "operationId": "deleteImage",
+        "responses": {
+          "200": {
+            "description": "프로필 이미지 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "프로필 이미지 수정",
+        "description": "사용자의 프로필 이미지를 수정합니다",
+        "operationId": "updateImage",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "수정할 이미지 파일"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "프로필 이미지 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseProfileImageUploadResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user-coupons": {
+      "get": {
+        "tags": [
+          "User Coupon"
+        ],
+        "summary": "사용자 쿠폰 목록 조회",
+        "description": "사용자의 쿠폰 목록을 조회합니다",
+        "operationId": "findUserCoupons",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "사용자 쿠폰 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseUserCouponResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User Coupon"
+        ],
+        "summary": "사용자 쿠폰 등록",
+        "description": "사용자가 쿠폰을 등록합니다",
+        "operationId": "registerUserCoupon",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCouponRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "사용자 쿠폰 등록 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseUserCouponResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservations": {
+      "get": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "예약 목록 조회",
+        "description": "사용자의 예약 목록을 페이징하여 조회합니다",
+        "operationId": "getReservationList",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "예약 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseReservationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "예약 생성",
+        "description": "새로운 상담 예약을 생성합니다",
+        "operationId": "save",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservationRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "예약 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseReservationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservations/{reservationId}/reviews": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "리뷰 작성",
+        "description": "예약에 대한 리뷰를 작성합니다",
+        "operationId": "save_1",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "예약 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "리뷰 작성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseReviewResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "프로필 생성",
+        "description": "새로운 프로필을 생성합니다",
+        "operationId": "createProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "프로필 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseProfileResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{profileId}/careers": {
+      "get": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "프로필별 경력 목록 조회",
+        "description": "특정 프로필의 경력 목록을 페이징하여 조회합니다",
+        "operationId": "findCareers",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "경력 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseCareersResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "경력 생성",
+        "description": "프로필에 새로운 경력을 추가합니다",
+        "operationId": "saveCareer",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dto": {
+                    "$ref": "#/components/schemas/CareerRequestDto"
+                  },
+                  "files": {
+                    "type": "array",
+                    "description": "첨부 파일 목록",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "required": [
+                  "dto"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "경력 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseCareerResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentor/consultations": {
+      "get": {
+        "tags": [
+          "Consultation"
+        ],
+        "summary": "내 상담 시간 조회",
+        "description": "멘토가 자신이 등록한 상담 시간을 조회합니다",
+        "operationId": "getMyConsultations",
+        "responses": {
+          "200": {
+            "description": "내 상담 시간 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseListConsultationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Consultation"
+        ],
+        "summary": "상담 가능 시간 등록",
+        "description": "멘토가 상담 가능한 시간을 등록합니다",
+        "operationId": "createConsultation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultationRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "상담 가능 시간 등록 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseConsultationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complaints": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "전체 문의 목록 조회",
+        "description": "모든 사용자의 문의 목록을 조회합니다",
+        "operationId": "getInquiries",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "전체 문의 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "문의 생성",
+        "description": "새로운 문의를 등록합니다",
+        "operationId": "save_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplaintRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "문의 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat_rooms": {
+      "get": {
+        "tags": [
+          "ChatRoom"
+        ],
+        "summary": "채팅방 목록 조회",
+        "description": "사용자의 채팅방 목록을 조회합니다",
+        "operationId": "findAllChatRooms",
+        "parameters": [
+          {
+            "name": "cursorTime",
+            "in": "query",
+            "description": "커서 시간",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "lastMessageId",
+            "in": "query",
+            "description": "마지막 메시지 ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "채팅방 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SliceResponseChatRoomReadDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ChatRoom"
+        ],
+        "summary": "채팅방 생성",
+        "description": "관리자가 테스트 또는 장애 복구를 위해 채팅방을 생성합니다",
+        "operationId": "createChatRooms",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatRoomRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "채팅방 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseChatRoomResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/token/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "토큰 재발급",
+        "description": "리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급합니다",
+        "operationId": "reissue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "토큰 재발급 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseTokenResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "회원가입",
+        "description": "새로운 사용자를 등록합니다",
+        "operationId": "signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "회원가입 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAuthResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup/code": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "인증코드 발송",
+        "description": "이메일로 인증코드를 발송합니다",
+        "operationId": "signupCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailAuthRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "인증코드 발송 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup/code/verify": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "인증코드 검증",
+        "description": "입력받은 인증코드를 검증합니다",
+        "operationId": "verifyCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthCodeRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "인증코드 검증 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "로그인",
+        "description": "사용자 로그인을 처리합니다",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "로그인 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseLoginResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/ticket": {
+      "post": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "티켓 등록",
+        "description": "관리자가 새로운 티켓을 등록합니다",
+        "operationId": "registerTicket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "티켓 등록 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseTicketResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/keywords": {
+      "post": {
+        "tags": [
+          "Keyword"
+        ],
+        "summary": "키워드 생성",
+        "description": "관리자가 새로운 키워드를 생성합니다",
+        "operationId": "createKeyword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "키워드 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseKeywordResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/coupons": {
+      "get": {
+        "tags": [
+          "Admin Coupon"
+        ],
+        "summary": "쿠폰 목록 조회",
+        "description": "관리자가 등록된 쿠폰 목록을 조회합니다",
+        "operationId": "findCoupons",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "쿠폰 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseAdminCouponResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin Coupon"
+        ],
+        "summary": "쿠폰 등록",
+        "description": "관리자가 새로운 쿠폰을 등록합니다",
+        "operationId": "registerCoupon",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCouponRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "쿠폰 등록 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAdminCouponResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/complaints/{complaintId}/answer": {
+      "get": {
+        "tags": [
+          "Admin Complaint"
+        ],
+        "summary": "관리자 답변 조회",
+        "description": "관리자가 특정 문의의 답변을 조회합니다",
+        "operationId": "getAnswer",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "답변을 조회할 문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "관리자 답변 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAnswerResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Admin Complaint"
+        ],
+        "summary": "문의 답변 생성",
+        "description": "관리자가 문의에 대한 답변을 작성합니다",
+        "operationId": "save_3",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "답변할 문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "문의 답변 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAnswerResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/categories": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "카테고리 생성",
+        "description": "관리자가 새로운 카테고리를 생성합니다",
+        "operationId": "createCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "카테고리 생성 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseCategoryResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "내 정보 조회",
+        "description": "인증된 사용자의 정보를 조회합니다",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "내 정보 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseUserResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "회원 탈퇴",
+        "description": "사용자 계정을 삭제합니다",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT 액세스 토큰",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "회원 탈퇴 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "내 정보 수정",
+        "description": "인증된 사용자의 정보를 수정합니다",
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "내 정보 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me/password": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "비밀번호 수정",
+        "description": "사용자의 비밀번호를 수정합니다",
+        "operationId": "updatePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "비밀번호 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me/extraInfo": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "추가 정보 입력",
+        "description": "사용자 유형(멘토/멘티) 및 전화번호 등 추가 정보를 입력합니다",
+        "operationId": "extraInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtraInfoRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "추가 정보 입력 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseLoginResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user-coupons/use": {
+      "patch": {
+        "tags": [
+          "User Coupon"
+        ],
+        "summary": "쿠폰 사용",
+        "description": "사용자가 보유한 쿠폰을 사용합니다",
+        "operationId": "updateUseUserCoupon",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCouponRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "쿠폰 사용 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews/{reviewId}": {
+      "delete": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "리뷰 삭제",
+        "description": "리뷰를 삭제합니다",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "삭제할 리뷰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "리뷰 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "리뷰 수정",
+        "description": "기존 리뷰를 수정합니다",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "수정할 리뷰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "리뷰 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{profileId}": {
+      "delete": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "프로필 삭제",
+        "description": "프로필을 삭제합니다",
+        "operationId": "deleteProfile",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "삭제할 프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "프로필 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "프로필 수정",
+        "description": "기존 프로필 정보를 수정합니다",
+        "operationId": "updateProfile",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "수정할 프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "프로필 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/careers/{careerId}": {
+      "delete": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "경력 삭제",
+        "description": "경력 정보를 삭제합니다",
+        "operationId": "deletedCareer",
+        "parameters": [
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "삭제할 경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "경력 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "경력 수정",
+        "description": "기존 경력 정보를 수정합니다",
+        "operationId": "updateCareer",
+        "parameters": [
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "수정할 경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCareerRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "경력 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/careers/{careerId}/certificates": {
+      "patch": {
+        "tags": [
+          "Certificate"
+        ],
+        "summary": "경력증명서 수정",
+        "description": "특정 경력의 증명서 파일을 수정합니다",
+        "operationId": "updateCertificate",
+        "parameters": [
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "description": "경력증명서 파일 목록",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "required": [
+                  "files"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "경력증명서 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/ticket/{ticketId}": {
+      "delete": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "티켓 삭제",
+        "description": "관리자가 티켓을 삭제합니다",
+        "operationId": "deleteTicket",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "description": "삭제할 티켓 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "티켓 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "티켓 수정",
+        "description": "관리자가 기존 티켓 정보를 수정합니다",
+        "operationId": "updateTicket",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "description": "수정할 티켓 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "티켓 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/reviews/{reviewId}": {
+      "patch": {
+        "tags": [
+          "Admin Review"
+        ],
+        "summary": "리뷰 상태 변경",
+        "description": "관리자가 리뷰의 상태를 변경합니다 (활성/삭제)",
+        "operationId": "changeReviewStatus",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "상태를 변경할 리뷰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "리뷰 상태 변경 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAdminReviewResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/mentor-careers/{careerId}/status": {
+      "patch": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "멘토 경력 확인 요청 상태 수정",
+        "description": "특정 멘토 경력 확인 요청의 승인/거부 상태를 수정합니다.",
+        "operationId": "updateMentorCareerStatus",
+        "parameters": [
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "수정할 멘토 경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "상태가 성공적으로 수정됨",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/keywords/{keywordId}": {
+      "delete": {
+        "tags": [
+          "Keyword"
+        ],
+        "summary": "키워드 삭제",
+        "description": "관리자가 키워드를 삭제합니다",
+        "operationId": "deleteKeyword",
+        "parameters": [
+          {
+            "name": "keywordId",
+            "in": "path",
+            "description": "삭제할 키워드 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "키워드 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Keyword"
+        ],
+        "summary": "키워드 수정",
+        "description": "관리자가 기존 키워드를 수정합니다",
+        "operationId": "updateKeyword",
+        "parameters": [
+          {
+            "name": "keywordId",
+            "in": "path",
+            "description": "수정할 키워드 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "키워드 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseKeywordResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/coupons/{couponId}": {
+      "delete": {
+        "tags": [
+          "Admin Coupon"
+        ],
+        "summary": "쿠폰 삭제",
+        "description": "관리자가 쿠폰을 삭제합니다",
+        "operationId": "deleteCoupon",
+        "parameters": [
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "삭제할 쿠폰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "쿠폰 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Admin Coupon"
+        ],
+        "summary": "쿠폰 수정",
+        "description": "관리자가 기존 쿠폰 정보를 수정합니다",
+        "operationId": "updateCoupon",
+        "parameters": [
+          {
+            "name": "couponId",
+            "in": "path",
+            "description": "수정할 쿠폰 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCouponRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "쿠폰 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/categories/{categoryId}": {
+      "delete": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "카테고리 삭제",
+        "description": "관리자가 카테고리를 삭제합니다",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "삭제할 카테고리 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "카테고리 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "카테고리 수정",
+        "description": "관리자가 기존 카테고리를 수정합니다",
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "수정할 카테고리 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "카테고리 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseCategoryResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/answers/{answerId}": {
+      "patch": {
+        "tags": [
+          "Admin Complaint"
+        ],
+        "summary": "답변 수정",
+        "description": "관리자가 기존 답변을 수정합니다",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "answerId",
+            "in": "path",
+            "description": "수정할 답변 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerUpdateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "답변 수정 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sse/notifications": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "알림 내역 조회",
+        "description": "사용자의 알림 내역을 페이징하여 조회합니다",
+        "operationId": "getNotifications",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "알림 내역 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseNotificationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sse/notifications/subscribe": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "SSE 알림 구독",
+        "description": "실시간 알림을 받기 위해 SSE 연결을 생성합니다",
+        "operationId": "subscribe",
+        "parameters": [
+          {
+            "name": "Last-Event-Id",
+            "in": "header",
+            "description": "클라이언트가 마지막으로 수신한 이벤트 ID",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE 연결 생성 성공",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/SseEmitter"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/login/{provider}": {
+      "get": {
+        "tags": [
+          "OAuth2"
+        ],
+        "summary": "소셜 로그인 페이지 리다이렉트",
+        "description": "소셜 로그인 페이지로 리다이렉트합니다",
+        "operationId": "redirectLoginPage",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "description": "소셜 로그인 제공자",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "KAKAO",
+                "NAVER",
+                "LOCAL"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "로그인 페이지 리다이렉트 성공"
+          }
+        }
+      }
+    },
+    "/oauth2/callback": {
+      "get": {
+        "tags": [
+          "OAuth2"
+        ],
+        "summary": "소셜 로그인 정보 확인",
+        "description": "소셜 로그인 결과를 확인합니다",
+        "operationId": "oauth2LoginCheck",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "확인 코드",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "소셜 로그인 정보 확인 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseOAuth2LoginResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/callback/{provider}": {
+      "get": {
+        "tags": [
+          "OAuth2"
+        ],
+        "summary": "소셜 로그인 콜백 처리",
+        "description": "소셜 로그인 인증 코드를 처리합니다",
+        "operationId": "oauth2Login",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "description": "소셜 로그인 제공자",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "KAKAO",
+                "NAVER",
+                "LOCAL"
+              ]
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "인증 코드",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "상태 값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "소셜 로그인 콜백 처리 성공"
+          }
+        }
+      }
+    },
+    "/api/v1/payments": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "결제 내역 조회",
+        "description": "사용자의 결제 내역을 페이징하여 조회합니다",
+        "operationId": "getPayments",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "결제 내역 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponsePaymentsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{paymentId}": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "결제 상세 조회",
+        "description": "특정 결제의 상세 정보를 조회합니다",
+        "operationId": "getPaymentDetails",
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "description": "결제 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "결제 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePaymentDetailsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "사용자 정보 조회",
+        "description": "특정 사용자의 정보를 조회합니다",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "조회할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "사용자 정보 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseUserInfoResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/profiles/{profileId}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "프로필 상세 조회",
+        "description": "특정 사용자의 특정 프로필을 조회합니다",
+        "operationId": "getProfile",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "프로필 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseProfileResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/profile-image": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "사용자 프로필 이미지 조회",
+        "description": "특정 사용자의 프로필 이미지를 조회합니다",
+        "operationId": "getUserProfileImage",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "조회할 사용자 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "사용자 프로필 이미지 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseProfileImageResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "티켓 목록 조회",
+        "description": "등록된 티켓 목록을 조회합니다",
+        "operationId": "findTicketList",
+        "responses": {
+          "200": {
+            "description": "티켓 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseListTicketResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ticket/{ticketId}": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "티켓 상세 조회",
+        "description": "특정 티켓의 상세 정보를 조회합니다",
+        "operationId": "findTicket",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "description": "조회할 티켓 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "티켓 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseTicketResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "내 리뷰 조회",
+        "description": "사용자가 작성한 리뷰 목록을 조회합니다",
+        "operationId": "getMyReviews",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "내 리뷰 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseReviewResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservations/{reservationId}": {
+      "get": {
+        "tags": [
+          "Reservation"
+        ],
+        "summary": "예약 상세 조회",
+        "description": "특정 예약의 상세 정보를 조회합니다",
+        "operationId": "getReservation",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "조회할 예약 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "예약 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseReservationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{profileId}/careers/{careerId}": {
+      "get": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "경력 상세 조회",
+        "description": "특정 경력의 상세 정보를 조회합니다",
+        "operationId": "findCareer",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "프로필 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "경력 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseFindCareerResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/me": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "내 프로필 조회",
+        "description": "인증된 사용자의 모든 프로필을 조회합니다",
+        "operationId": "getMyProfiles",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "내 프로필 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseProfileResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentors/{mentorId}/reviews": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "멘토별 리뷰 조회",
+        "description": "특정 멘토의 리뷰 목록을 조회합니다",
+        "operationId": "getMentorReviews",
+        "parameters": [
+          {
+            "name": "mentorId",
+            "in": "path",
+            "description": "멘토 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "멘토별 리뷰 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseReviewResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentors/recommended-profiles": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "추천 멘토 조회",
+        "description": "카테고리별 추천 멘토를 조회합니다",
+        "operationId": "getRecommendedProfiles",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "description": "카테고리 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "추천 멘토 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseListRecommendedProfileResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentors/profiles": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "멘토 프로필 키워드 검색",
+        "description": "키워드로 멘토 프로필을 검색합니다",
+        "operationId": "getMentorProfiles",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "검색 키워드",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "멘토 프로필 키워드 검색 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseListProfileResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentor/{mentorId}/availableConsultations": {
+      "get": {
+        "tags": [
+          "Consultation"
+        ],
+        "summary": "상담 가능 시간 조회",
+        "description": "멘티가 특정 멘토의 상담 가능한 시간을 조회합니다",
+        "operationId": "getSlots",
+        "parameters": [
+          {
+            "name": "mentorId",
+            "in": "path",
+            "description": "멘토 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "localDate",
+            "in": "query",
+            "description": "조회할 날짜",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "상담 가능 시간 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseListAvailableSlotDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/keywords": {
+      "get": {
+        "tags": [
+          "Keyword"
+        ],
+        "summary": "키워드 목록 조회",
+        "description": "등록된 키워드 목록을 조회합니다",
+        "operationId": "getKeywords",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "키워드 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseKeywordResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/keywords/search": {
+      "get": {
+        "tags": [
+          "Keyword"
+        ],
+        "summary": "키워드 검색",
+        "description": "키워드 이름으로 검색합니다",
+        "operationId": "getKeywords_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "검색할 키워드 이름",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "키워드 검색 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseKeywordResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complaints/{complaintId}": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "문의 상세 조회",
+        "description": "특정 문의의 상세 정보를 조회합니다",
+        "operationId": "getComplaint",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "문의 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "문의 삭제",
+        "description": "본인의 문의를 삭제합니다",
+        "operationId": "deleteComplaint",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "삭제할 문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "문의 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complaints/{complaintId}/answer": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "문의 답변 조회",
+        "description": "특정 문의에 대한 답변을 조회합니다",
+        "operationId": "getAnswer_1",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "문의 답변 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseAnswerResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/complaints/myComplaints": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "summary": "내 문의 목록 조회",
+        "description": "인증된 사용자의 문의 목록만 조회합니다",
+        "operationId": "getMyComplaints",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "내 문의 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat_rooms/{chatRoomId}/status": {
+      "get": {
+        "tags": [
+          "ChatRoom"
+        ],
+        "summary": "채팅방 상태 확인",
+        "description": "채팅방이 닫혔는지 확인합니다",
+        "operationId": "isClosed",
+        "parameters": [
+          {
+            "name": "chatRoomId",
+            "in": "path",
+            "description": "채팅방 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "채팅방 상태 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatRoomStatusResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat_rooms/{chatRoomId}/messages": {
+      "get": {
+        "tags": [
+          "ChatRoom"
+        ],
+        "summary": "채팅 메시지 조회",
+        "description": "특정 채팅방의 메시지 내역을 조회합니다",
+        "operationId": "findAllMessages",
+        "parameters": [
+          {
+            "name": "chatRoomId",
+            "in": "path",
+            "description": "채팅방 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastMessageId",
+            "in": "query",
+            "description": "마지막 메시지 ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "채팅 메시지 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SliceResponseMessageDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "카테고리 목록 조회",
+        "description": "페이징된 카테고리 목록을 조회합니다",
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "카테고리 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseCategoryResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/careers": {
+      "get": {
+        "tags": [
+          "Career"
+        ],
+        "summary": "전체 경력 조회",
+        "description": "인증된 사용자의 모든 경력을 조회합니다",
+        "operationId": "findAllCareers",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "전체 경력 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseCareersResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/reviews": {
+      "get": {
+        "tags": [
+          "Admin Review"
+        ],
+        "summary": "관리자 리뷰 목록 조회",
+        "description": "관리자가 리뷰 목록을 조회합니다",
+        "operationId": "getReviewList",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "필터링할 사용자 ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "관리자 리뷰 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseReviewResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/mentor-careers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "멘토 경력 확인 요청 목록 조회",
+        "description": "페이징 처리된 멘토 경력 확인 요청 목록을 조회합니다.",
+        "operationId": "getMentorCareers",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공적으로 조회됨",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/mentor-careers/{careerId}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "멘토 경력 확인 요청 단건 조회",
+        "description": "특정 ID의 멘토 경력 확인 요청을 상세 조회합니다.",
+        "operationId": "getMentorCareerById",
+        "parameters": [
+          {
+            "name": "careerId",
+            "in": "path",
+            "description": "조회할 멘토 경력 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공적으로 조회됨",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/complaints": {
+      "get": {
+        "tags": [
+          "Admin Complaint"
+        ],
+        "summary": "관리자 문의 목록 조회",
+        "description": "관리자가 모든 문의 목록을 조회합니다",
+        "operationId": "getAllComplaints",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "description": "페이지 정보",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "관리자 문의 목록 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponsePagingResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/complaints/{complaintId}": {
+      "get": {
+        "tags": [
+          "Admin Complaint"
+        ],
+        "summary": "관리자 문의 상세 조회",
+        "description": "관리자가 특정 문의의 상세 정보를 조회합니다",
+        "operationId": "getComplaint_1",
+        "parameters": [
+          {
+            "name": "complaintId",
+            "in": "path",
+            "description": "조회할 문의 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "관리자 문의 상세 조회 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseComplaintResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mentor/consultations/{consultationId}": {
+      "delete": {
+        "tags": [
+          "Consultation"
+        ],
+        "summary": "상담 시간 삭제",
+        "description": "멘토가 등록한 상담 시간을 삭제합니다",
+        "operationId": "deleteConsultation",
+        "parameters": [
+          {
+            "name": "consultationId",
+            "in": "path",
+            "description": "삭제할 상담 시간 ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "상담 시간 삭제 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "로그아웃",
+        "description": "사용자 로그아웃을 처리합니다",
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT 액세스 토큰",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "로그아웃 성공",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommonResponseSocketTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SocketTokenResponseDto"
+          }
+        }
+      },
+      "SocketTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentCancelRequestDto": {
+        "type": "object",
+        "description": "결제 취소 요청 정보",
+        "properties": {
+          "cancelReason": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseVoid": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {}
+        }
+      },
+      "PaymentPrepareRequestDto": {
+        "type": "object",
+        "description": "결제 준비 요청 정보",
+        "properties": {
+          "reservationId": {
+            "type": "string"
+          },
+          "ticketId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "couponId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orderName": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "successUrl": {
+            "type": "string"
+          },
+          "failUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponsePaymentPrepareResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PaymentPrepareResponseDto"
+          }
+        }
+      },
+      "PaymentPrepareResponseDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string"
+          },
+          "orderName": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentConfirmRequestDto": {
+        "type": "object",
+        "description": "결제 승인 요청 정보",
+        "properties": {
+          "paymentKey": {
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CommonResponsePaymentConfirmResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PaymentConfirmResponseDto"
+          }
+        }
+      },
+      "PaymentConfirmResponseDto": {
+        "type": "object",
+        "properties": {
+          "paymentKey": {
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CommonResponseProfileImageUploadResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProfileImageUploadResponseDto"
+          }
+        }
+      },
+      "ProfileImageUploadResponseDto": {
+        "type": "object",
+        "properties": {
+          "imgUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "UserCouponRequestDto": {
+        "type": "object",
+        "description": "쿠폰 사용 요청 정보",
+        "properties": {
+          "couponId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isUsed": {
+            "type": "string",
+            "enum": [
+              "USED",
+              "UNUSED"
+            ]
+          }
+        }
+      },
+      "CommonResponseUserCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserCouponResponseDto"
+          }
+        }
+      },
+      "UserCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "couponId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "useStatus": {
+            "type": "string",
+            "enum": [
+              "USED",
+              "UNUSED"
+            ]
+          },
+          "couponName": {
+            "type": "string"
+          },
+          "discountAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReservationRequestDto": {
+        "type": "object",
+        "description": "예약 생성 요청 정보",
+        "properties": {
+          "mentor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ticket": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationStatus": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "PAID",
+              "COMPLETED",
+              "CANCELED",
+              "NO_SHOW"
+            ]
+          },
+          "reservationStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reservationEndAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CommonResponseReservationResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReservationResponseDto"
+          }
+        }
+      },
+      "ReservationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ticket": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationStatus": {
+            "type": "string",
+            "enum": [
+              "REQUESTED",
+              "PAID",
+              "COMPLETED",
+              "CANCELED",
+              "NO_SHOW"
+            ]
+          },
+          "reservationStartAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reservationEndAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReviewRequestDto": {
+        "type": "object",
+        "description": "리뷰 수정 요청 정보",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "mentor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CommonResponseReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReviewResponseDto"
+          }
+        }
+      },
+      "ReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "reviewStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "DELETED"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProfileRequestDto": {
+        "type": "object",
+        "description": "프로필 수정 요청 정보",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "keywordId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProfileResponseDto"
+          }
+        }
+      },
+      "KeywordResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "role": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordResponseDto"
+            }
+          },
+          "accountNumber": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "imgUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "CareerRequestDto": {
+        "type": "object",
+        "description": "경력 생성 요청 정보",
+        "properties": {
+          "company": {
+            "type": "string",
+            "minLength": 1
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "company",
+          "startAt"
+        ]
+      },
+      "CareerResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "company": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "careerStatus": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZED",
+              "UNAUTHORIZED"
+            ]
+          },
+          "certificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificateResponseDto"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CertificateResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseCareerResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CareerResponseDto"
+          }
+        }
+      },
+      "ConsultationRequestDto": {
+        "type": "object",
+        "description": "상담 시간 등록 요청 정보",
+        "properties": {
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "startAt": {
+            "type": "string"
+          },
+          "endAt": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseConsultationResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ConsultationResponseDto"
+          }
+        }
+      },
+      "ConsultationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "enum": [
+              "MONDAY",
+              "TUESDAY",
+              "WEDNESDAY",
+              "THURSDAY",
+              "FRIDAY",
+              "SATURDAY",
+              "SUNDAY"
+            ]
+          },
+          "startAt": {
+            "type": "string"
+          },
+          "endAt": {
+            "type": "string"
+          }
+        }
+      },
+      "ComplaintRequestDto": {
+        "type": "object",
+        "description": "문의 생성 요청 정보",
+        "properties": {
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "contents": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "RESOLVED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "COMPLAINT",
+              "INQUIRY_ACCOUNT",
+              "INQUIRY_CHAT",
+              "INQUIRY_PAY",
+              "INQUIRY_RESERVATION",
+              "INQUIRY_TICKET",
+              "INQUIRY_PROFILE"
+            ]
+          }
+        }
+      },
+      "CommonResponseComplaintResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ComplaintResponseDto"
+          }
+        }
+      },
+      "ComplaintResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "contents": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "RESOLVED"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "COMPLAINT",
+              "INQUIRY_ACCOUNT",
+              "INQUIRY_CHAT",
+              "INQUIRY_PAY",
+              "INQUIRY_RESERVATION",
+              "INQUIRY_TICKET",
+              "INQUIRY_PROFILE"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateChatRoomRequestDto": {
+        "type": "object",
+        "description": "채팅방 생성 요청 정보",
+        "properties": {
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ChatRoomResponseDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menteeId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CommonResponseChatRoomResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ChatRoomResponseDto"
+          }
+        }
+      },
+      "RefreshTokenRequestDto": {
+        "type": "object",
+        "description": "리프레시 토큰 요청 정보",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TokenResponseDto"
+          }
+        }
+      },
+      "TokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthRequestDto": {
+        "type": "object",
+        "description": "회원가입 요청 정보",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nickName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*\\W).{8,}$"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^\\d{3}-\\d{4}-\\d{4}$"
+          },
+          "userRole": {
+            "type": "string",
+            "enum": [
+              "MENTOR",
+              "MENTEE",
+              "ADMIN",
+              "GUEST"
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "nickName",
+          "password",
+          "phoneNumber",
+          "userRole"
+        ]
+      },
+      "AuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "userGrade": {
+            "type": "string",
+            "enum": [
+              "SEED",
+              "SPROUT",
+              "BRANCH",
+              "BLOOM",
+              "NEST"
+            ]
+          },
+          "userRole": {
+            "type": "string",
+            "enum": [
+              "MENTOR",
+              "MENTEE",
+              "ADMIN",
+              "GUEST"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CommonResponseAuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthResponseDto"
+          }
+        }
+      },
+      "EmailAuthRequestDto": {
+        "type": "object",
+        "description": "이메일 인증 요청 정보",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "AuthCodeRequestDto": {
+        "type": "object",
+        "description": "인증코드 검증 요청 정보",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "authCode": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequestDto": {
+        "type": "object",
+        "description": "로그인 요청 정보",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseLoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginResponseDto"
+          }
+        }
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "TicketRequestDto": {
+        "type": "object",
+        "description": "티켓 수정 요청 정보",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ticketTime": {
+            "type": "string",
+            "enum": [
+              "MINUTES_20",
+              "MINUTES_30",
+              "MINUTES_40"
+            ]
+          }
+        }
+      },
+      "CommonResponseTicketResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TicketResponseDto"
+          }
+        }
+      },
+      "TicketResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ticketTime": {
+            "type": "string",
+            "enum": [
+              "MINUTES_20",
+              "MINUTES_30",
+              "MINUTES_40"
+            ]
+          }
+        }
+      },
+      "KeywordRequestDto": {
+        "type": "object",
+        "description": "키워드 수정 요청 정보",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CommonResponseKeywordResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/KeywordResponseDto"
+          }
+        }
+      },
+      "AdminCouponRequestDto": {
+        "type": "object",
+        "description": "쿠폰 수정 요청 정보",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "discountAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "issuedQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minGrade": {
+            "type": "string",
+            "enum": [
+              "SEED",
+              "SPROUT",
+              "BRANCH",
+              "BLOOM",
+              "NEST"
+            ]
+          },
+          "minOrderAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "FIXED_AMOUNT",
+              "PERCENT_AMOUNT"
+            ]
+          }
+        }
+      },
+      "AdminCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "discountAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "issuedQuantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minGrade": {
+            "type": "string",
+            "enum": [
+              "SEED",
+              "SPROUT",
+              "BRANCH",
+              "BLOOM",
+              "NEST"
+            ]
+          },
+          "minOrderAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "FIXED_AMOUNT",
+              "PERCENT_AMOUNT"
+            ]
+          },
+          "canIssue": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CommonResponseAdminCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AdminCouponResponseDto"
+          }
+        }
+      },
+      "AnswerRequestDto": {
+        "type": "object",
+        "description": "답변 생성 요청 정보",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contents": {
+            "type": "string"
+          }
+        }
+      },
+      "AnswerResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "complaintId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contents": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseAnswerResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AnswerResponseDto"
+          }
+        }
+      },
+      "CategoryRequestDto": {
+        "type": "object",
+        "description": "카테고리 수정 요청 정보",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseCategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CategoryResponseDto"
+          }
+        }
+      },
+      "UserRequestDto": {
+        "type": "object",
+        "description": "사용자 정보 수정 요청",
+        "properties": {
+          "nickName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "bank": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdatePasswordRequestDto": {
+        "type": "object",
+        "description": "비밀번호 수정 요청 정보",
+        "properties": {
+          "rawPassword": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*\\W).{8,}$"
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*\\W).{8,}$"
+          }
+        },
+        "required": [
+          "newPassword",
+          "rawPassword"
+        ]
+      },
+      "ExtraInfoRequestDto": {
+        "type": "object",
+        "description": "추가 정보 입력 요청",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "phoneNumber": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^\\d{3}-\\d{4}-\\d{4}$"
+          },
+          "userRole": {
+            "type": "string",
+            "enum": [
+              "MENTOR",
+              "MENTEE",
+              "ADMIN",
+              "GUEST"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "phoneNumber",
+          "userRole"
+        ]
+      },
+      "UpdateCareerRequestDto": {
+        "type": "object",
+        "description": "경력 수정 요청 정보",
+        "properties": {
+          "company": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AdminReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "reviewStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "DELETED"
+            ]
+          }
+        }
+      },
+      "CommonResponseAdminReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AdminReviewResponseDto"
+          }
+        }
+      },
+      "AdminRequestDto": {
+        "type": "object",
+        "description": "상태 수정 요청 데이터",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZED",
+              "UNAUTHORIZED"
+            ]
+          }
+        }
+      },
+      "CommonResponse": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {}
+        }
+      },
+      "AnswerUpdateRequestDto": {
+        "type": "object",
+        "description": "답변 수정 요청 정보",
+        "properties": {
+          "contents": {
+            "type": "string"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseNotificationResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseNotificationResponseDto"
+          }
+        }
+      },
+      "NotificationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "receiverId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chatRoomId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PagingResponseNotificationResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationResponseDto"
+            }
+          }
+        }
+      },
+      "SseEmitter": {
+        "type": "object",
+        "properties": {
+          "timeout": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CommonResponseOAuth2LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/OAuth2LoginResponseDto"
+          }
+        }
+      },
+      "OAuth2LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "newUser": {
+            "type": "boolean"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponsePagingResponsePaymentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponsePaymentsResponseDto"
+          }
+        }
+      },
+      "PagingResponsePaymentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentsResponseDto"
+            }
+          }
+        }
+      },
+      "PaymentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorName": {
+            "type": "string"
+          },
+          "ticketName": {
+            "type": "string"
+          },
+          "originalAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "PAID",
+              "CANCELED",
+              "FAILED"
+            ]
+          },
+          "paymentType": {
+            "type": "string",
+            "enum": [
+              "KAKAOPAY",
+              "CARD",
+              "NAVERPAY",
+              "TOSSPAY"
+            ]
+          },
+          "approvedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponsePaymentDetailsResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PaymentDetailsResponseDto"
+          }
+        }
+      },
+      "PaymentDetailsResponseDto": {
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string"
+          },
+          "ticketName": {
+            "type": "string"
+          },
+          "payerName": {
+            "type": "string"
+          },
+          "paymentKey": {
+            "type": "string"
+          },
+          "paymentStatus": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approvedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseUserInfoResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserInfoResponseDto"
+          }
+        }
+      },
+      "UserInfoResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "userRole": {
+            "type": "string",
+            "enum": [
+              "MENTOR",
+              "MENTEE",
+              "ADMIN",
+              "GUEST"
+            ]
+          }
+        }
+      },
+      "CommonResponseProfileImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProfileImageResponseDto"
+          }
+        }
+      },
+      "ProfileImageResponseDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "imgUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserResponseDto"
+          }
+        }
+      },
+      "UserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "userRole": {
+            "type": "string",
+            "enum": [
+              "MENTOR",
+              "MENTEE",
+              "ADMIN",
+              "GUEST"
+            ]
+          },
+          "userGrade": {
+            "type": "string",
+            "enum": [
+              "SEED",
+              "SPROUT",
+              "BRANCH",
+              "BLOOM",
+              "NEST"
+            ]
+          },
+          "socialType": {
+            "type": "string",
+            "enum": [
+              "KAKAO",
+              "NAVER",
+              "LOCAL"
+            ]
+          },
+          "totalPrice": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bank": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CommonResponsePagingResponseUserCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseUserCouponResponseDto"
+          }
+        }
+      },
+      "PagingResponseUserCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserCouponResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponseListTicketResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseReviewResponseDto"
+          }
+        }
+      },
+      "PagingResponseReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseReservationResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseReservationResponseDto"
+          }
+        }
+      },
+      "PagingResponseReservationResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReservationResponseDto"
+            }
+          }
+        }
+      },
+      "CareersResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "profileId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "company": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "careerStatus": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZED",
+              "UNAUTHORIZED"
+            ]
+          }
+        }
+      },
+      "CommonResponsePagingResponseCareersResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseCareersResponseDto"
+          }
+        }
+      },
+      "PagingResponseCareersResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareersResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponseFindCareerResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/FindCareerResponseDto"
+          }
+        }
+      },
+      "FindCareerResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "company": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "careerStatus": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZED",
+              "UNAUTHORIZED"
+            ]
+          },
+          "certificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificateResponseDto"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CommonResponsePagingResponseProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseProfileResponseDto"
+          }
+        }
+      },
+      "PagingResponseProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponseListRecommendedProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecommendedProfileResponseDto"
+            }
+          }
+        }
+      },
+      "RecommendedProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "profileTitle": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordResponseDto"
+            }
+          },
+          "imgUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseListProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProfileResponseDto"
+            }
+          }
+        }
+      },
+      "AvailableSlotDto": {
+        "type": "object",
+        "properties": {
+          "availableStartAt": {
+            "type": "string"
+          },
+          "availableEndAt": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponseListAvailableSlotDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableSlotDto"
+            }
+          }
+        }
+      },
+      "CommonResponseListConsultationResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsultationResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseKeywordResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseKeywordResponseDto"
+          }
+        }
+      },
+      "PagingResponseKeywordResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeywordResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseComplaintResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseComplaintResponseDto"
+          }
+        }
+      },
+      "PagingResponseComplaintResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ComplaintResponseDto"
+            }
+          }
+        }
+      },
+      "ChatRoomReadDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorName": {
+            "type": "string"
+          },
+          "menteeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menteeName": {
+            "type": "string"
+          },
+          "reservationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastMessageContent": {
+            "type": "string"
+          },
+          "lastMessageTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastMessageSenderId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SliceResponseChatRoomReadDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatRoomReadDto"
+            }
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ChatRoomStatusResponseDto": {
+        "type": "object",
+        "properties": {
+          "closed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MessageDto": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chatRoomId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mentorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "menteeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "senderId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "sentAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isMine": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SliceResponseMessageDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageDto"
+            }
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CommonResponsePagingResponseCategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseCategoryResponseDto"
+          }
+        }
+      },
+      "PagingResponseCategoryResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryResponseDto"
+            }
+          }
+        }
+      },
+      "CommonResponsePagingResponseAdminCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "httpStatus": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagingResponseAdminCouponResponseDto"
+          }
+        }
+      },
+      "PagingResponseAdminCouponResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "hasPrevious": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminCouponResponseDto"
+            }
+          }
+        }
+      },
+      "DeleteRequestDto": {
+        "type": "object",
+        "description": "회원 탈퇴 요청 정보",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "LogoutRequestDto": {
+        "type": "object",
+        "description": "로그아웃 요청 정보",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
